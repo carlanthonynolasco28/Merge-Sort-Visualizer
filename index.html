@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=\, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #f59e0b;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --success: #10b981;
+            --danger: #ef4444;
+            --border: #e2e8f0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f1f5f9;
+            color: var(--dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background-color: white;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            padding: 1rem;
+        }
+
+        .navbar {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo-icon {
+            width: 24px;
+            height: 24px;
+            border: 2px solid var(--primary);
+            border-radius: 4px;
+            position: relative;
+        }
+
+        .logo-icon::before,
+        .logo-icon::after {
+            content: "";
+            position: absolute;
+            background-color: var(--primary);
+            height: 2px;
+        }
+
+        .logo-icon::before {
+            width: 12px;
+            top: 7px;
+            left: 3px;
+        }
+
+        .logo-icon::after {
+            width: 8px;
+            top: 13px;
+            left: 6px;
+        }
+
+        .main-content {
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+            flex: 1;
+        }
+
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        h1 {
+            color: var(--dark);
+            margin-bottom: 1rem;
+            font-size: 1.8rem;
+        }
+
+        h2 {
+            color: var(--dark);
+            margin-bottom: 1rem;
+            font-size: 1.4rem;
+        }
+
+        h3 {
+            color: var(--dark);
+            margin-top: 1.5rem;
+            margin-bottom: 0.75rem;
+            font-size: 1.2rem;
+        }
+
+        p {
+            line-height: 1.6;
+            margin-bottom: 1rem;
+            color: #475569;
+        }
+
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            margin-bottom: 1.5rem;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 0.6rem 1.2rem;
+            border: none;
+            border-radius: 12px;
+            background-color: var(--primary);
+            color: white;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .btn:disabled {
+            background-color: #cbd5e1;
+            cursor: not-allowed;
+        }
+
+        .btn-secondary {
+            background-color: var(--secondary);
+        }
+
+        .btn-secondary:hover {
+            background-color: #d97706;
+        }
+
+        .btn-secondary:disabled {
+            background-color: #fcd34d;
+            cursor: not-allowed;
+        }
+
+        input[type="number"] {
+            padding: 0.6rem;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            width: 80px;
+        }
+
+        .array-container {
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            height: 300px;
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+            gap: 2px;
+        }
+
+        .array-bar {
+            background-color: var(--primary-dark);
+            transition: height 0.2s ease;
+            flex-grow: 1;
+            max-width: 50px;
+        }
+
+        .sorting-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .legend {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+        }
+
+        .compare {
+            background-color: var(--danger);
+        }
+
+        .sorted {
+            background-color: var(--success);
+        }
+
+        .unsorted {
+            background-color: var(--primary);
+        }
+
+        .code-container {
+            background-color: #f8fafc;
+            border-radius: 4px;
+            padding: 1rem;
+            overflow-x: auto;
+            margin-bottom: 1.5rem;
+        }
+
+        pre {
+            font-family: 'Consolas', 'Monaco', monospace;
+            line-height: 1.5;
+        }
+
+        code {
+            color: #334155;
+        }
+
+        .complexity-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1.5rem;
+        }
+
+        .complexity-table th,
+        .complexity-table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .complexity-table th {
+            background-color: #f8fafc;
+            font-weight: 600;
+        }
+
+        ul,
+        ol {
+            margin-left: 1.5rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+            color: #475569;
+        }
+
+        li {
+            margin-bottom: 0.5rem;
+        }
+
+        footer {
+            background-color: white;
+            padding: 1rem;
+            text-align: center;
+            border-top: 1px solid var(--border);
+            margin-top: auto;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            color: #64748b;
+        }
+
+        @media (max-width: 768px) {
+            .controls {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .sorting-info {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <div class="logo-icon"></div>
+                <span>MergeSort Visualizer</span>
+            </div>
+        </nav>
+    </header>
+
+    <main class="main-content">
+        <div class="card">
+            <h1>Merge Sort Visualization</h1>
+            <p>Merge Sort is a divide-and-conquer algorithm that divides the input array into two halves, recursively
+                sorts them, and then merges the sorted halves.</p>
+
+            <div class="controls">
+                <button id="generateArray" class="btn">Generate New Array</button>
+                <div>
+                    <label for="arraySize">Array Size:</label>
+                    <input type="number" id="arraySize" min="5" max="50" value="15">
+                </div>
+                <div>
+                    <label for="animationSpeed">Speed:</label>
+                    <input type="number" id="animationSpeed" min="1" max="100" value="50">
+                </div>
+                <button id="startSort" class="btn btn-secondary">Start Sorting</button>
+                <button id="pauseSort" class="btn" disabled>Pause</button>
+                <button id="resetSort" class="btn" disabled>Reset</button>
+            </div>
+
+            <div class="sorting-info">
+                <div class="info-item">
+                    <span>Array Access Count:</span>
+                    <span id="arrayAccess">0</span>
+                </div>
+                <div class="info-item">
+                    <span>Comparisons:</span>
+                    <span id="comparisons">0</span>
+                </div>
+                <div class="info-item">
+                    <span>Time Elapsed:</span>
+                    <span id="timeElapsed">0.00s</span>
+                </div>
+            </div>
+
+            <div class="legend">
+                <div class="legend-item">
+                    <div class="legend-color unsorted"></div>
+                    <span>Unsorted</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color compare"></div>
+                    <span>Comparing</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color sorted"></div>
+                    <span>Sorted</span>
+                </div>
+            </div>
+
+            <div class="array-container" id="arrayContainer"></div>
+        </div>
+
+        <div class="card">
+            <h2>Understanding Merge Sort</h2>
+            <p>Merge Sort is an efficient, comparison-based sorting algorithm with a time complexity of O(n log n). It
+                follows the divide-and-conquer approach:</p>
+            <ol>
+                <li>Divide the array into two halves</li>
+                <li>Recursively sort both halves</li>
+                <li>Merge the sorted halves to produce a sorted array</li>
+            </ol>
+
+            <h3>Merge Sort Implementation</h3>
+            <div class="code-container">
+                <pre><code>function mergeSort(arr) {
+    if (arr.length <= 1) return arr;
+    
+    // Divide array in half
+    const mid = Math.floor(arr.length / 2);
+    const left = arr.slice(0, mid);
+    const right = arr.slice(mid);
+    
+    // Recursively sort both halves
+    return merge(
+        mergeSort(left),
+        mergeSort(right)
+    );
+}
+
+function merge(left, right) {
+    let result = [];
+    let leftIndex = 0;
+    let rightIndex = 0;
+    
+    // Compare elements from both arrays and merge
+    while (leftIndex < left.length && rightIndex < right.length) {
+        if (left[leftIndex] < right[rightIndex]) {
+            result.push(left[leftIndex]);
+            leftIndex++;
+        } else {
+            result.push(right[rightIndex]);
+            rightIndex++;
+        }
+    }
+    
+    // Add remaining elements
+    return result.concat(
+        left.slice(leftIndex),
+        right.slice(rightIndex)
+    );
+}</code></pre>
+            </div>
+
+            <h3>Time & Space Complexity</h3>
+            <table class="complexity-table">
+                <thead>
+                    <tr>
+                        <th>Complexity</th>
+                        <th>Best Case</th>
+                        <th>Average Case</th>
+                        <th>Worst Case</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Time</td>
+                        <td>O(n log n)</td>
+                        <td>O(n log n)</td>
+                        <td>O(n log n)</td>
+                    </tr>
+                    <tr>
+                        <td>Space</td>
+                        <td>O(n)</td>
+                        <td>O(n)</td>
+                        <td>O(n)</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h3>Advantages and Disadvantages</h3>
+            <p><strong>Advantages:</strong></p>
+            <ul>
+                <li>Stable sort (preserves the relative order of equal elements)</li>
+                <li>Guaranteed O(n log n) time complexity regardless of input</li>
+                <li>Works well for external sorting (when data doesn't fit in memory)</li>
+            </ul>
+            <p><strong>Disadvantages:</strong></p>
+            <ul>
+                <li>Requires O(n) extra space</li>
+                <li>Slower for small arrays compared to insertion sort</li>
+                <li>Not an in-place sorting algorithm</li>
+            </ul>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2025 MergeSort Visualizer. Created for educational purposes.</p>
+        </div>
+    </footer>
+
+    <script>
+        // DOM Elements
+        const generateArrayBtn = document.getElementById('generateArray');
+        const startSortBtn = document.getElementById('startSort');
+        const pauseSortBtn = document.getElementById('pauseSort');
+        const resetSortBtn = document.getElementById('resetSort');
+        const arraySizeInput = document.getElementById('arraySize');
+        const animationSpeedInput = document.getElementById('animationSpeed');
+        const arrayContainer = document.getElementById('arrayContainer');
+        const arrayAccessCounter = document.getElementById('arrayAccess');
+        const comparisonsCounter = document.getElementById('comparisons');
+        const timeElapsedCounter = document.getElementById('timeElapsed');
+
+        // Variables
+        let array = [];
+        let arrayBars = [];
+        let sortingInProgress = false;
+        let animationSpeed = 100 - animationSpeedInput.value;
+        let arrayAccess = 0;
+        let comparisons = 0;
+        let startTime = 0;
+        let timerInterval;
+        let animations = [];
+        let animationIndex = 0;
+        let isPaused = false;
+        let auxArray = []; // Auxiliary array for merge sort
+
+        // Generate random array
+        function generateArray() {
+            const size = parseInt(arraySizeInput.value);
+            if (isNaN(size) || size < 5 || size > 50) {
+                arraySizeInput.value = 15;
+                return generateArray();
+            }
+
+            array = [];
+            for (let i = 0; i < size; i++) {
+                array.push(Math.floor(Math.random() * 100) + 10); // Random values between 10 and 109
+            }
+            renderArray();
+            resetCounters();
+        }
+
+        // Render array as bars
+        function renderArray() {
+            arrayContainer.innerHTML = '';
+            arrayBars = [];
+            const maxValue = Math.max(...array);
+            const containerWidth = arrayContainer.offsetWidth;
+            const barWidth = Math.floor((containerWidth - (array.length * 2)) / array.length);
+
+            for (let i = 0; i < array.length; i++) {
+                const bar = document.createElement('div');
+                bar.className = 'array-bar';
+                const height = (array[i] / maxValue) * 280;
+                bar.style.height = `${height}px`;
+
+                // Make sure bars have appropriate width
+                if (barWidth > 0) {
+                    bar.style.width = `${barWidth}px`;
+                }
+
+                arrayContainer.appendChild(bar);
+                arrayBars.push(bar);
+            }
+        }
+
+        // Reset counters
+        function resetCounters() {
+            arrayAccess = 0;
+            comparisons = 0;
+            startTime = 0;
+            clearInterval(timerInterval);
+            arrayAccessCounter.textContent = '0';
+            comparisonsCounter.textContent = '0';
+            timeElapsedCounter.textContent = '0.00s';
+        }
+
+        // Update timer
+        function updateTimer() {
+            const elapsed = (Date.now() - startTime) / 1000;
+            timeElapsedCounter.textContent = elapsed.toFixed(2) + 's';
+        }
+
+        // Start sorting process
+        async function startSort() {
+            if (sortingInProgress) return;
+
+            sortingInProgress = true;
+            isPaused = false;
+            animations = [];
+            animationIndex = 0;
+
+            // Update UI
+            startSortBtn.disabled = true;
+            generateArrayBtn.disabled = true;
+            arraySizeInput.disabled = true;
+            pauseSortBtn.disabled = false;
+            resetSortBtn.disabled = false;
+
+            // Reset counters and start timer
+            resetCounters();
+            startTime = Date.now();
+            timerInterval = setInterval(updateTimer, 100);
+
+            // Make a copy of the array for sorting
+            auxArray = [...array];
+
+            // Get merge sort animations
+            await getMergeSortAnimations(array);
+
+            // Start playing animations
+            playAnimations();
+        }
+
+        // Pause/Resume sorting
+        function togglePause() {
+            isPaused = !isPaused;
+            pauseSortBtn.textContent = isPaused ? 'Resume' : 'Pause';
+
+            if (!isPaused && sortingInProgress) {
+                playAnimations();
+            }
+        }
+
+        // Reset sorting process
+        function resetSort() {
+            sortingInProgress = false;
+            isPaused = false;
+            clearInterval(timerInterval);
+
+            // Reset UI
+            startSortBtn.disabled = false;
+            generateArrayBtn.disabled = false;
+            arraySizeInput.disabled = false;
+            pauseSortBtn.disabled = true;
+            pauseSortBtn.textContent = 'Pause';
+            resetSortBtn.disabled = true;
+
+            // Reset visualization
+            renderArray();
+            resetCounters();
+        }
+
+        // Generate animations for merge sort
+        function getMergeSortAnimations(array) {
+            animations = [];
+            if (array.length <= 1) return array;
+
+            const auxiliaryArray = array.slice();
+            mergeSortHelper(array, 0, array.length - 1, auxiliaryArray);
+            return animations;
+        }
+
+        // Helper function for merge sort
+        function mergeSortHelper(mainArray, startIdx, endIdx, auxiliaryArray) {
+            if (startIdx === endIdx) return;
+
+            const middleIdx = Math.floor((startIdx + endIdx) / 2);
+
+            // Sort left half
+            mergeSortHelper(auxiliaryArray, startIdx, middleIdx, mainArray);
+
+            // Sort right half
+            mergeSortHelper(auxiliaryArray, middleIdx + 1, endIdx, mainArray);
+
+            // Merge two halves
+            doMerge(mainArray, startIdx, middleIdx, endIdx, auxiliaryArray);
+        }
+
+        // Merge two sorted halves
+        function doMerge(mainArray, startIdx, middleIdx, endIdx, auxiliaryArray) {
+            let k = startIdx;
+            let i = startIdx;
+            let j = middleIdx + 1;
+
+            while (i <= middleIdx && j <= endIdx) {
+                // Push comparison animation
+                animations.push({ type: 'compare', indices: [i, j] });
+
+                // Push revert animation
+                animations.push({ type: 'revert', indices: [i, j] });
+
+                // Increment comparison counter
+                comparisons++;
+
+                if (auxiliaryArray[i] <= auxiliaryArray[j]) {
+                    // Push overwrite animation
+                    animations.push({
+                        type: 'overwrite',
+                        index: k,
+                        value: auxiliaryArray[i]
+                    });
+
+                    mainArray[k++] = auxiliaryArray[i++];
+                } else {
+                    // Push overwrite animation
+                    animations.push({
+                        type: 'overwrite',
+                        index: k,
+                        value: auxiliaryArray[j]
+                    });
+
+                    mainArray[k++] = auxiliaryArray[j++];
+                }
+
+                // Increment array access counter
+                arrayAccess += 2;
+            }
+
+            while (i <= middleIdx) {
+                // Push comparison animation
+                animations.push({ type: 'compare', indices: [i, i] });
+
+                // Push revert animation
+                animations.push({ type: 'revert', indices: [i, i] });
+
+                // Push overwrite animation
+                animations.push({
+                    type: 'overwrite',
+                    index: k,
+                    value: auxiliaryArray[i]
+                });
+
+                mainArray[k++] = auxiliaryArray[i++];
+                arrayAccess += 2;
+            }
+
+            while (j <= endIdx) {
+                // Push comparison animation
+                animations.push({ type: 'compare', indices: [j, j] });
+
+                // Push revert animation
+                animations.push({ type: 'revert', indices: [j, j] });
+
+                // Push overwrite animation
+                animations.push({
+                    type: 'overwrite',
+                    index: k,
+                    value: auxiliaryArray[j]
+                });
+
+                mainArray[k++] = auxiliaryArray[j++];
+                arrayAccess += 2;
+            }
+        }
+
+        // Play animations with delay
+        function playAnimations() {
+            if (isPaused || !sortingInProgress || animationIndex >= animations.length) {
+                if (animationIndex >= animations.length && sortingInProgress) {
+                    finishSorting();
+                }
+                return;
+            }
+
+            const animation = animations[animationIndex];
+            animationIndex++;
+
+            if (animation.type === 'compare') {
+                const [i, j] = animation.indices;
+                if (i < arrayBars.length && j < arrayBars.length) {
+                    arrayBars[i].classList.add('compare');
+                    arrayBars[j].classList.add('compare');
+                }
+                comparisonsCounter.textContent = comparisons;
+            } else if (animation.type === 'revert') {
+                const [i, j] = animation.indices;
+                if (i < arrayBars.length && j < arrayBars.length) {
+                    arrayBars[i].classList.remove('compare');
+                    arrayBars[j].classList.remove('compare');
+                }
+            } else if (animation.type === 'overwrite') {
+                const { index, value } = animation;
+                if (index < arrayBars.length) {
+                    const maxValue = Math.max(...array);
+                    const height = (value / maxValue) * 280;
+                    arrayBars[index].style.height = `${height}px`;
+                    array[index] = value;
+                    arrayAccessCounter.textContent = arrayAccess;
+                }
+            }
+
+            // Schedule next animation
+            setTimeout(playAnimations, animationSpeed);
+        }
+
+        // Mark sorting as complete
+        function finishSorting() {
+            sortingInProgress = false;
+            clearInterval(timerInterval);
+
+            // Mark all bars as sorted
+            arrayBars.forEach(bar => {
+                bar.classList.remove('compare');
+                bar.classList.add('sorted');
+            });
+
+            // Update UI
+            pauseSortBtn.disabled = true;
+        }
+
+        // Event listeners
+        generateArrayBtn.addEventListener('click', generateArray);
+        startSortBtn.addEventListener('click', startSort);
+        pauseSortBtn.addEventListener('click', togglePause);
+        resetSortBtn.addEventListener('click', resetSort);
+
+        animationSpeedInput.addEventListener('input', () => {
+            animationSpeed = 100 - animationSpeedInput.value;
+        });
+
+        // Resize handler to adjust the visualization
+        window.addEventListener('resize', () => {
+            if (!sortingInProgress) {
+                renderArray();
+            }
+        });
+
+        // Initialize with a random array
+        generateArray();
+    </script>
+</body>
+
+</html>
